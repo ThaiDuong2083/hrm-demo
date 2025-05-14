@@ -23,9 +23,8 @@ public class RewardEntity extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String code;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "include_type")
-    private DeductionType includeType;
+    private String includeType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

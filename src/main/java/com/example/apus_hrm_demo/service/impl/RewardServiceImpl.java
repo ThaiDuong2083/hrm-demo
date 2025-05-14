@@ -34,14 +34,6 @@ public class RewardServiceImpl implements RewardService {
     @Override
     public BaseResponse<ResponseAfterCUDTO> createReward(RewardDTO rewardFormDTO) {
         BaseResponse<ResponseAfterCUDTO> response = new BaseResponse<>();
-        Optional<Long> check = rewardRepository.checkExistId(rewardFormDTO.getId());
-        if (check.isEmpty()){
-            response.setData(null);
-            response.setTraceId(HttpStatus.BAD_REQUEST.toString());
-            response.setMessage("The id " + rewardFormDTO.getId() + " does not exist");
-            return response;
-        }
-
         RewardEntity rewardEntity = rewardMapper.toEntity(rewardFormDTO);
         response.setData(genericReponseAfterCUMapper.toDto(rewardRepository.save(rewardEntity)));
         response.setTraceId(HttpStatus.OK.toString());

@@ -1,11 +1,12 @@
 package com.example.apus_hrm_demo.mapper.reward;
 
 import com.example.apus_hrm_demo.entity.CurrencyEntity;
+import com.example.apus_hrm_demo.entity.GroupRewardEntity;
 import com.example.apus_hrm_demo.entity.UomEntity;
 import com.example.apus_hrm_demo.model.base.BaseDTO;
 import com.example.apus_hrm_demo.model.base.BaseResponse;
 import com.example.apus_hrm_demo.model.base.ResponsePage;
-import com.example.apus_hrm_demo.repository.GroupAllowanceRepository;
+import com.example.apus_hrm_demo.repository.GroupRewardRepository;
 import com.example.apus_hrm_demo.util.DeductionType;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class ConvertInReward {
-    private final GroupAllowanceRepository groupAllowanceRepository;
+    private final GroupRewardRepository groupRewardRepository;
     private final RestTemplate rest = new RestTemplate();
 
     @Named("includeTypeToEntity")
@@ -70,5 +71,11 @@ public class ConvertInReward {
         return new BaseDTO(response.getBody().getData().getContent().getFirst().getId(),
                 response.getBody().getData().getContent().getFirst().getName(),
                 null);
+    }
+
+    @Named("toGroupRewardDTO")
+    public BaseDTO toGroupRewardDTO(Long groupRewardId){
+        GroupRewardEntity allowanceEntity =  groupRewardRepository.findById(groupRewardId).orElseThrow(() -> new RuntimeException("GroupReward not found"));
+        return new BaseDTO(allowanceEntity.getId(),allowanceEntity.getName(),allowanceEntity.getCode());
     }
 }

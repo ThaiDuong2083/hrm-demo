@@ -10,7 +10,7 @@ CREATE TABLE `group_allowance` (
   `is_active` boolean NOT NULL,
   `created_at` timestamp(6) DEFAULT (CURRENT_TIMESTAMP),
   `updated_at` timestamp(6) DEFAULT (CURRENT_TIMESTAMP),
-  `created_by` bigint NOT NULL,
+  `created_by` bigint,
   `updated_by` bigint
 );
 
@@ -27,7 +27,7 @@ CREATE TABLE `allowance` (
   `is_active` boolean NOT NULL,
   `created_at` timestamp(6) DEFAULT (CURRENT_TIMESTAMP),
   `updated_at` timestamp(6) DEFAULT (CURRENT_TIMESTAMP),
-  `created_by` bigint NOT NULL,
+  `created_by` bigint,
   `updated_by` bigint
 );
 
@@ -43,7 +43,7 @@ CREATE TABLE `allowance_policy` (
   `state` varchar(50) NOT NULL,
   `created_at` timestamp(6) DEFAULT (CURRENT_TIMESTAMP),
   `updated_at` timestamp(6) DEFAULT (CURRENT_TIMESTAMP),
-  `created_by` bigint NOT NULL,
+  `created_by` bigint,
   `updated_by` bigint
 );
 
@@ -69,7 +69,7 @@ CREATE TABLE `group_reward` (
   `description` text COMMENT 'Mô tả nhóm thưởng',
   `created_at` timestamp(6) DEFAULT (CURRENT_TIMESTAMP) COMMENT 'Ngày tạo',
   `updated_at` timestamp(6) DEFAULT (CURRENT_TIMESTAMP) COMMENT 'Ngày cập nhật',
-  `created_by` bigint NOT NULL COMMENT 'Người tạo',
+  `created_by` bigint  COMMENT 'Người tạo',
   `updated_by` bigint COMMENT 'Người sửa cuối'
 );
 

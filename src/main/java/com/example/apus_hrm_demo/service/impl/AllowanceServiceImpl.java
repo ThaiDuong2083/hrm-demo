@@ -33,13 +33,6 @@ public class AllowanceServiceImpl implements AllowanceSercive {
     @Override
     public BaseResponse<ResponseAfterCUDTO> createAllowance(AllowanceDTO allowanceFormDTO) {
         BaseResponse<ResponseAfterCUDTO> response = new BaseResponse<>();
-        Optional<Long> check = allowanceRepository.checkExistId(allowanceFormDTO.getId());
-        if (check.isEmpty()){
-            response.setData(null);
-            response.setTraceId(HttpStatus.BAD_REQUEST.toString());
-            response.setMessage("The id " + allowanceFormDTO.getId() + " does not exist");
-            return response;
-        }
 
         AllowanceEntity allowanceEntity = allowanceMapper.toEntity(allowanceFormDTO);
         response.setData(genericReponseAfterCUMapper.toDto(allowanceRepository.save(allowanceEntity)));

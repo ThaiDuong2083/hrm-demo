@@ -12,14 +12,17 @@ public interface RewardMapper {
     @Mapping(source = "includeType",target = "includeType", qualifiedByName = "includeTypeToDto")
     @Mapping(source = "currencyId", target = "currency", qualifiedByName = "currencyToDTO")
     @Mapping(source = "uomId", target = "uom", qualifiedByName = "uomToDTO")
+    @Mapping(source = "groupRewardId", target = "groupReward", qualifiedByName = "toGroupRewardDTO")
     RewardDTO toDto(RewardEntity rewardEntity);
 
 
     @Mapping(source = "currency.id", target = "currencyId")
     @Mapping(source = "uom.id",target = "uomId")
     @Mapping(source = "includeType",target = "includeType", qualifiedByName = "includeTypeToEntity")
+    @Mapping(source = "groupReward.id",target = "groupRewardId")
     RewardEntity toEntity(RewardDTO rewardFormDTO);
 
+    @Mapping(source = "groupRewardId", target = "groupReward", qualifiedByName = "toGroupRewardDTO")
     RewardGetAllDTO toGetAllDto(RewardEntity rewardEntity);
 
     @Mapping(source = "currency.id", target = "currencyId")

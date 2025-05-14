@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name ="allowance_policy")
+@Table(name ="reward_policy_line")
 @Getter
 @Setter
 public class RewardPolicyLineEntity extends BaseEntity {

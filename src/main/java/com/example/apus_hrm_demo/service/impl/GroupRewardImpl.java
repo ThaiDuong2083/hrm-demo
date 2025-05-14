@@ -1,9 +1,11 @@
 package com.example.apus_hrm_demo.service.impl;
 
 import com.example.apus_hrm_demo.entity.GroupRewardEntity;
+import com.example.apus_hrm_demo.mapper.GenericReponseAfterCUMapper;
 import com.example.apus_hrm_demo.mapper.group_reward.GroupRewardMapper;
 import com.example.apus_hrm_demo.model.base.BaseResponse;
 import com.example.apus_hrm_demo.model.GroupRewardDTO;
+import com.example.apus_hrm_demo.model.base.ResponseAfterCUDTO;
 import com.example.apus_hrm_demo.model.base.ResponsePage;
 import com.example.apus_hrm_demo.repository.GroupRewardRepository;
 import com.example.apus_hrm_demo.service.GroupRewardService;
@@ -27,23 +29,21 @@ import java.util.Optional;
 public class GroupRewardImpl implements GroupRewardService {
     private final GroupRewardRepository groupRewardRepository;
     private final GroupRewardMapper groupRewardMapper;
-    @PersistenceContext
-    private final EntityManager entityManager;
+    private final GenericReponseAfterCUMapper<GroupRewardEntity> genericReponseAfterCUMapper;
 
     @Override
-    public BaseResponse<GroupRewardDTO> create(GroupRewardDTO groupRewardDTO) {
-        BaseResponse<GroupRewardDTO> response = new BaseResponse<>();
+    public BaseResponse<ResponseAfterCUDTO> create(GroupRewardDTO groupRewardDTO) {
+        BaseResponse<ResponseAfterCUDTO> response = new BaseResponse<>();
         GroupRewardEntity groupRewardEntity = groupRewardMapper.toEntity(groupRewardDTO);
-        GroupRewardDTO newGroupRewardDTO = groupRewardMapper.toDto(groupRewardRepository.save(groupRewardEntity));
-        response.setData(newGroupRewardDTO);
+        response.setData(genericReponseAfterCUMapper.toDto(groupRewardRepository.save(groupRewardEntity)));
         response.setTraceId(HttpStatus.OK.toString());
         response.setMessage("Success");
         return response;
     }
 
     @Override
-    public BaseResponse<GroupRewardDTO> update(GroupRewardDTO groupRewardDTO) {
-        BaseResponse<GroupRewardDTO> response = new BaseResponse<>();
+    public BaseResponse<ResponseAfterCUDTO> update(GroupRewardDTO groupRewardDTO) {
+        BaseResponse<ResponseAfterCUDTO> response = new BaseResponse<>();
         Optional<GroupRewardEntity> oldGroupRewardEntity = groupRewardRepository.findById(groupRewardDTO.getId());
         if (oldGroupRewardEntity.isEmpty()) {
             response.setData(null);
@@ -55,7 +55,7 @@ public class GroupRewardImpl implements GroupRewardService {
         GroupRewardEntity groupRewardEntity = oldGroupRewardEntity.get();
         groupRewardMapper.toUpdateEntity(groupRewardDTO, groupRewardEntity);
 
-        response.setData(groupRewardMapper.toDto(groupRewardRepository.save(groupRewardEntity)));
+        response.setData(genericReponseAfterCUMapper.toDto(groupRewardRepository.save(groupRewardEntity)));
         response.setTraceId(HttpStatus.OK.toString());
         response.setMessage("Success");
         return response;

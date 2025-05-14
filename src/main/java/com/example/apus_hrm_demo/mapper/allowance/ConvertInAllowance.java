@@ -1,6 +1,7 @@
 package com.example.apus_hrm_demo.mapper.allowance;
 
 import com.example.apus_hrm_demo.entity.CurrencyEntity;
+import com.example.apus_hrm_demo.entity.GroupAllowanceEntity;
 import com.example.apus_hrm_demo.entity.UomEntity;
 import com.example.apus_hrm_demo.model.base.BaseDTO;
 import com.example.apus_hrm_demo.model.base.BaseResponse;
@@ -68,5 +69,11 @@ public class ConvertInAllowance {
         return new BaseDTO(response.getBody().getData().getContent().getFirst().getId(),
                 response.getBody().getData().getContent().getFirst().getName(),
                 null);
+    }
+
+    @Named("toGroupAllowanceDTO")
+    public BaseDTO toGroupAllowanceDTO(Long groupAllowanceId){
+        GroupAllowanceEntity allowanceEntity =  groupAllowanceRepository.findById(groupAllowanceId).orElseThrow(() -> new RuntimeException("GroupAllowance not found"));
+        return new BaseDTO(allowanceEntity.getId(),allowanceEntity.getName(),allowanceEntity.getCode());
     }
 }
