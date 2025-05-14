@@ -36,12 +36,9 @@ public class RewardEntity extends BaseEntity {
     @Column(name = "currency_id")
     private Long currencyId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_reward_id")
-    private GroupRewardEntity groupReward;
+    @Column(name = "group_reward_id")
+    private Long groupRewardId;
 
     private String description;
 
-    @OneToMany(mappedBy = "rewardEntity",fetch = FetchType.LAZY)
-    private Set<RewardPolicyLineEntity> rewardPolicyLineEntities;
 }

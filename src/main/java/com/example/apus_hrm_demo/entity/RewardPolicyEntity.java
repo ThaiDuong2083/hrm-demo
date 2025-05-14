@@ -46,6 +46,4 @@ public class RewardPolicyEntity extends BaseEntity {
 
     private String description;
 
-    @OneToMany(mappedBy = "rewardPolicyEntity", fetch = FetchType.LAZY)
-    private Set<RewardPolicyApplicableTargetEntity> applicableTargets;
 }

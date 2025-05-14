@@ -14,13 +14,11 @@ public class RewardPolicyLineEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reward_policy_id")
-    private RewardPolicyLineEntity rewardPolicyLineEntity;
+    @Column(nullable = false, name = "reward_policy_id")
+    private Long rewardPolicyLineId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "reward_id")
-    private RewardEntity rewardEntity;
+    @Column(nullable = false, name = "reward_id")
+    private Long rewardId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

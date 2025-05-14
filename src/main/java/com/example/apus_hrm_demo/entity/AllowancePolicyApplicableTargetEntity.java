@@ -13,9 +13,8 @@ public class AllowancePolicyApplicableTargetEntity  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "allownce_policy_id",nullable = false)
-    private AllowancePolicyEntity allowancePolicyEntity;
+    @Column(name = "allownce_policy_id",nullable = false)
+    private Long allowancePolicyId;
 
     @Column(name = "target_id",nullable = false)
     private Long targetId;

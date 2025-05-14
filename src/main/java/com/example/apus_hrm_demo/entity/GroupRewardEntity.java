@@ -25,7 +25,4 @@ public class GroupRewardEntity extends BaseEntity {
     private Long parentId;
 
     private String description;
-
-    @OneToMany(mappedBy = "groupReward",fetch = FetchType.LAZY)
-    private Set<RewardEntity> rewardEntities;
 }

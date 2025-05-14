@@ -37,7 +37,7 @@ public class AllowancePolicyEntity extends BaseEntity {
     private Long endDate;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     private State state;
 
     @Enumerated(EnumType.STRING)
@@ -45,7 +45,4 @@ public class AllowancePolicyEntity extends BaseEntity {
     private ApplicableType applicableType;
 
     private String description;
-
-    @OneToMany(mappedBy = "allowancePolicyEntity", fetch = FetchType.LAZY)
-    private Set<AllowancePolicyApplicableTargetEntity> applicableTargets;
 }

@@ -14,13 +14,11 @@ public class AllowancePolicyLineEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "allownce_policy_id")
-    private AllowancePolicyEntity allowancePolicyEntity;
+    @Column(name = "allownce_policy_id", nullable = false)
+    private Long allowancePolicyId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "allowance_id")
-    private AllowanceEntity allowanceEntity;
+    @Column(nullable = false, name = "allowance_id")
+    private Long allowanceId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

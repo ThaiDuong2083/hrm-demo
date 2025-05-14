@@ -32,17 +32,15 @@ public class AllowanceEntity extends BaseEntity {
 
     @Column(name = "uom_id")
     private Long uomId;
+
     @Column(name = "currency_id")
     private Long currencyId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_allowance_id")
-    private GroupAllowanceEntity groupAllowance;
+    @Column(name = "group_allowance_id",nullable = false)
+    private Long groupAllowanceId;
 
     private String description;
     @Column(nullable = false, name = "is_active")
     private Boolean isActive;
 
-    @OneToMany(mappedBy = "allowanceEntity",fetch = FetchType.LAZY)
-    private Set<AllowancePolicyLineEntity> allowancePolicyLineEntities;
 }

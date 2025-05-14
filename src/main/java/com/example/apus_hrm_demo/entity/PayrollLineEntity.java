@@ -16,9 +16,8 @@ public class PayrollLineEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false,name = "payroll_id")
-    private PayrollEntity payrollEntity;
+    @Column(nullable = false,name = "payroll_id")
+    private Long payrollId;
     @Column(nullable = false,name = "group_target_id")
     private Long groupTargetId;
     @Column(nullable = false,name = "target_id")

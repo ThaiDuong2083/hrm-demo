@@ -42,7 +42,4 @@ public class PayrollEntity extends BaseEntity {
     private Double totalAllowanceAmount;
 
     private String note;
-
-    @OneToMany(mappedBy = "payrollEntity",fetch = FetchType.LAZY)
-    private Set<PayrollLineEntity> payrollLineEntitySet;
 }
