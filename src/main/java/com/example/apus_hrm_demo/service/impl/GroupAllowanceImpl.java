@@ -1,16 +1,19 @@
 package com.example.apus_hrm_demo.service.impl;
 
 import com.example.apus_hrm_demo.entity.GroupAllowanceEntity;
-import com.example.apus_hrm_demo.mapper.GenericReponseAfterCUMapper;
+import com.example.apus_hrm_demo.exception.NullEntityException;
 import com.example.apus_hrm_demo.mapper.group_allowance.GroupAllowanceMapper;
 import com.example.apus_hrm_demo.model.base.BaseResponse;
 import com.example.apus_hrm_demo.model.base.ResponseAfterCUDTO;
 import com.example.apus_hrm_demo.model.base.ResponsePage;
-import com.example.apus_hrm_demo.model.GroupAllowanceDTO;
+import com.example.apus_hrm_demo.model.group_allowance.GroupAllowanceDTO;
 import com.example.apus_hrm_demo.repository.GroupAllowanceRepository;
 import com.example.apus_hrm_demo.service.GroupAllowanceService;
 import com.example.apus_hrm_demo.speficiation.GenericSpecificationBuilder;
-import com.example.apus_hrm_demo.speficiation.SearchOperation;
+import com.example.apus_hrm_demo.util.TraceIdGenarator;
+import com.example.apus_hrm_demo.util.constant.MessageResponseConstant;
+import com.example.apus_hrm_demo.util.enum_util.SearchOperation;
+import com.example.apus_hrm_demo.util.response.CommonResponseGenerator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,7 +22,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,16 +30,13 @@ import java.util.Optional;
 public class GroupAllowanceImpl implements GroupAllowanceService {
     private final GroupAllowanceRepository groupAllowanceRepository;
     private final GroupAllowanceMapper groupAllowanceMapper;
-    private final GenericReponseAfterCUMapper<GroupAllowanceEntity> genericReponseAfterCUMapper;
+    private final CommonResponseGenerator<GroupAllowanceEntity, GroupAllowanceDTO, GroupAllowanceDTO, ResponseAfterCUDTO> commonResponseGenerator;
 
     @Override
     public BaseResponse<ResponseAfterCUDTO> create(GroupAllowanceDTO groupAllowanceDTO) {
-        BaseResponse<ResponseAfterCUDTO> response = new BaseResponse<>();
         GroupAllowanceEntity groupAllowanceEntity = groupAllowanceMapper.toEntity(groupAllowanceDTO);
-        response.setData(genericReponseAfterCUMapper.toDto(groupAllowanceRepository.save(groupAllowanceEntity)));
-        response.setTraceId(HttpStatus.OK.toString());
-        response.setMessage("Success");
-        return response;
+        return commonResponseGenerator.returnCUResponse(groupAllowanceEntity, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS,groupAllowanceMapper);
+
     }
 
     @Override
@@ -47,46 +46,35 @@ public class GroupAllowanceImpl implements GroupAllowanceService {
         if (oldGroupAllowanceEntity.isEmpty()) {
             response.setData(null);
             response.setTraceId(HttpStatus.NOT_FOUND.toString());
-            response.setMessage("Group reward not found");
+            response.setMessage("Group line not found");
             return response;
         }
         GroupAllowanceEntity groupAllowanceEntity = oldGroupAllowanceEntity.get();
         groupAllowanceMapper.toUpdateEntity(groupAllowanceDTO, groupAllowanceEntity);
 
-        response.setData(genericReponseAfterCUMapper.toDto(groupAllowanceRepository.save(groupAllowanceEntity)));
-        response.setTraceId(HttpStatus.OK.toString());
-        response.setMessage("Success");
-        return response;
+        return commonResponseGenerator.returnCUResponse(groupAllowanceEntity, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS,groupAllowanceMapper);
     }
 
     @Override
     public void delete(Long id) {
         Optional<GroupAllowanceEntity> groupAllowanceEntity = groupAllowanceRepository.findById(id);
-        if (groupAllowanceEntity.isPresent()) {
-            groupAllowanceRepository.delete(groupAllowanceEntity.get());
+        if (groupAllowanceEntity.isEmpty()) {
+            throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
         }
+        groupAllowanceRepository.delete(groupAllowanceEntity.get());
     }
 
     @Override
     public BaseResponse<GroupAllowanceDTO> findById(Long id) {
-        BaseResponse<GroupAllowanceDTO> response = new BaseResponse<>();
         Optional<GroupAllowanceEntity> groupAllowanceEntity = groupAllowanceRepository.findById(id);
         if (groupAllowanceEntity.isEmpty()) {
-            response.setData(null);
-            response.setTraceId(HttpStatus.NOT_FOUND.toString());
-            response.setMessage("Group reward not found");
-            return response;
+            throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
         }
-        response.setTraceId(HttpStatus.OK.toString());
-        response.setMessage("Success");
-        response.setData(groupAllowanceMapper.toDto(groupAllowanceEntity.get()));
-        return response;
+        return commonResponseGenerator.returnReadResponse(groupAllowanceEntity.get(), TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS, groupAllowanceMapper);
     }
 
     @Override
     public BaseResponse<ResponsePage<GroupAllowanceDTO>> getAll(String name, Boolean isActive,Pageable pageable) {
-        BaseResponse<ResponsePage<GroupAllowanceDTO>> response = new BaseResponse<>();
-
         GenericSpecificationBuilder<GroupAllowanceEntity> builder = new GenericSpecificationBuilder<>();
 
         if (name != null && !name.isEmpty()) {
@@ -98,21 +86,7 @@ public class GroupAllowanceImpl implements GroupAllowanceService {
 
         Specification<GroupAllowanceEntity> spec = builder.build();
         Page<GroupAllowanceEntity> pageEntities = groupAllowanceRepository.findAll(spec, pageable);
-        List<GroupAllowanceDTO> groupAllowanceDTOS = pageEntities.getContent().stream().map(groupAllowanceMapper::toDto).toList();
-
-        ResponsePage<GroupAllowanceDTO> responsePage = new ResponsePage<>();
-        responsePage.setContent(groupAllowanceDTOS);
-        responsePage.setPage(pageEntities.getNumber());
-        responsePage.setTotalPages(pageEntities.getTotalPages());
-        responsePage.setSize(pageEntities.getSize());
-        responsePage.setTotalElements(pageEntities.getTotalElements());
-        responsePage.setNumberOfElements(pageEntities.getNumberOfElements());
-        responsePage.setSort(pageEntities.getSort().toString());
-
-        response.setData(responsePage);
-        response.setTraceId(HttpStatus.OK.toString());
-        response.setMessage("Success");
-        return response;
+        return commonResponseGenerator.returnListResponse(pageEntities, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS, groupAllowanceMapper);
     }
 
 }

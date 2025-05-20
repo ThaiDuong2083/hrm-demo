@@ -1,5 +1,6 @@
 package com.example.apus_hrm_demo.speficiation;
 
+import com.example.apus_hrm_demo.util.enum_util.SearchOperation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

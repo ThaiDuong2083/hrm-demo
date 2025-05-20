@@ -13,7 +13,7 @@ public class AllowancePolicyApplicableTargetEntity  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "allownce_policy_id",nullable = false)
+    @Column(name = "allowance_policy_id",nullable = false)
     private Long allowancePolicyId;
 
     @Column(name = "target_id",nullable = false)

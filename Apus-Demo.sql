@@ -98,7 +98,7 @@ CREATE TABLE `reward_policy` (
   `start_date` date NOT NULL COMMENT 'Ngày áp dụng',
   `end_date` date COMMENT 'Ngày kết thúc',
   `state` varchar(50) NOT NULL,
-  `applicable_type` varchar(50) UNIQUE NOT NULL COMMENT 'All/Department/Position/Employee',
+  `applicable_type` varchar(50) NOT NULL COMMENT 'All/Department/Position/Employee',
   `created_at` timestamp(6) DEFAULT (CURRENT_TIMESTAMP) COMMENT 'Ngày tạo',
   `updated_at` timestamp(6) DEFAULT (CURRENT_TIMESTAMP) COMMENT 'Ngày cập nhật',
   `created_by` bigint NOT NULL COMMENT 'Người tạo',

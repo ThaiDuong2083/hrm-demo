@@ -1,17 +1,16 @@
 package com.example.apus_hrm_demo.entity;
 
-import com.example.apus_hrm_demo.util.AllowanceRewardType;
-import com.example.apus_hrm_demo.util.DeductionType;
+import com.example.apus_hrm_demo.util.enum_util.AllowanceRewardType;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Set;
 
 @Entity
 @Table(name ="reward")
 @Getter
 @Setter
+@NoArgsConstructor
 public class RewardEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,4 +39,8 @@ public class RewardEntity extends BaseEntity {
 
     private String description;
 
+    public RewardEntity(Long id, Long groupRewardId) {
+        this.id = id;
+        this.groupRewardId = groupRewardId;
+    }
 }

@@ -1,6 +1,6 @@
 package com.example.apus_hrm_demo.mapper.group_allowance;
 
-import com.example.apus_hrm_demo.entity.GroupAllowanceEntity;
+import com.example.apus_hrm_demo.mapper.base.MapperNameCode;
 import com.example.apus_hrm_demo.model.base.BaseDTO;
 import com.example.apus_hrm_demo.repository.GroupAllowanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,17 +14,7 @@ public class ParentGroupAllowanceMapper {
 
     @Named("parentIdAllowanceToParentDto")
     public BaseDTO parentIdToParentDto(Long parentId) {
-        if (parentId == null) {
-            return null;
-        }
-
-        GroupAllowanceEntity parentEntity = groupAllowanceRepository.findById(parentId)
-                .orElseThrow(() -> new IllegalArgumentException("Parent Id: " + parentId + " not found"));
-
-        BaseDTO dto = new BaseDTO();
-        dto.setId(parentEntity.getId());
-        dto.setName(parentEntity.getName());
-        dto.setCode(parentEntity.getCode());
-        return dto;
+        MapperNameCode mapperNameCode = new MapperNameCode();
+        return mapperNameCode.convert(parentId,groupAllowanceRepository);
     }
 }

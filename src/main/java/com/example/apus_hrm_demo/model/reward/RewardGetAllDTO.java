@@ -12,5 +12,4 @@ public class RewardGetAllDTO {
     private String code;
     private BaseDTO groupReward;
     private String description;
-    private Boolean isActive;
 }

@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface RewardRepository extends JpaRepository<RewardEntity, Long> , JpaSpecificationExecutor<RewardEntity> {
     @Query("select r.id from  RewardEntity r where r.id =:id")
     Optional<Long> checkExistId(Long id);
+
 }

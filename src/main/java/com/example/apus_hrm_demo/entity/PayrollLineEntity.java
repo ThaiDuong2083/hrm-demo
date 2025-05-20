@@ -1,8 +1,7 @@
 package com.example.apus_hrm_demo.entity;
 
-import com.example.apus_hrm_demo.util.AmountItem;
-import com.example.apus_hrm_demo.util.Cycle;
-import com.example.apus_hrm_demo.util.PayrollLineType;
+import com.example.apus_hrm_demo.util.enum_util.AmountItem;
+import com.example.apus_hrm_demo.util.enum_util.PayrollLineType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

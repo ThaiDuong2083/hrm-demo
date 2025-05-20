@@ -1,6 +1,6 @@
 package com.example.apus_hrm_demo.mapper.group_reward;
 
-import com.example.apus_hrm_demo.entity.GroupRewardEntity;
+import com.example.apus_hrm_demo.mapper.base.MapperNameCode;
 import com.example.apus_hrm_demo.model.base.BaseDTO;
 import com.example.apus_hrm_demo.repository.GroupRewardRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,17 +14,7 @@ public class ParentGroupRewardMapper {
 
     @Named("parentIdRewardToParentDto")
     public BaseDTO parentIdToParentDto(Long parentId) {
-        if (parentId == null) {
-            return null;
-        }
-
-        GroupRewardEntity parentEntity = groupRewardRepository.findById(parentId)
-                .orElseThrow(() -> new IllegalArgumentException("Parent Id: " + parentId + " not found"));
-
-        BaseDTO dto = new BaseDTO();
-        dto.setId(parentEntity.getId());
-        dto.setName(parentEntity.getName());
-        dto.setCode(parentEntity.getCode());
-        return dto;
+        MapperNameCode mapperNameCode = new MapperNameCode();
+        return mapperNameCode.convert(parentId,groupRewardRepository);
     }
 }

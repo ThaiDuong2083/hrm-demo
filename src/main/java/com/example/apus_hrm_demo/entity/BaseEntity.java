@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-public class BaseEntity {
+public class BaseEntity implements InterfaceEntity{
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -30,4 +30,19 @@ public class BaseEntity {
     @LastModifiedBy
     @Column(name = "updated_by")
     private Long updatedBy;
+
+    @Override
+    public Long getId() {
+        return 0L;
+    }
+
+    @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
+    public String getCode() {
+        return "";
+    }
 }

@@ -3,7 +3,7 @@ package com.example.apus_hrm_demo.api;
 import com.example.apus_hrm_demo.model.base.BaseResponse;
 import com.example.apus_hrm_demo.model.base.ResponseAfterCUDTO;
 import com.example.apus_hrm_demo.model.base.ResponsePage;
-import com.example.apus_hrm_demo.model.GroupAllowanceDTO;
+import com.example.apus_hrm_demo.model.group_allowance.GroupAllowanceDTO;
 import com.example.apus_hrm_demo.service.GroupAllowanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
