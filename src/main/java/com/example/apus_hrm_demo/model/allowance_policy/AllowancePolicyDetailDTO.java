@@ -8,7 +8,7 @@ import com.example.apus_hrm_demo.util.enum_util.State;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -18,8 +18,8 @@ public class AllowancePolicyDetailDTO {
     private String name;
     private String code;
     private PolicyType type;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private ApplicableType applicableType;
     private List<AllowancePolicyApplicableTargetDetailDTO> target;
     private List<AllowancePolicyLineGetAllDTO> allowancePolicyLine;

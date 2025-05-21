@@ -11,6 +11,7 @@ import com.example.apus_hrm_demo.model.reward_policy.RewardPolicyGetAllDto;
 import com.example.apus_hrm_demo.model.base.BaseResponse;
 import com.example.apus_hrm_demo.model.base.ResponseAfterCUDTO;
 import com.example.apus_hrm_demo.model.base.ResponsePage;
+import com.example.apus_hrm_demo.model.reward_policy_line.RewardPolicyLineDTO;
 import com.example.apus_hrm_demo.repository.RewardPolicyRepository;
 import com.example.apus_hrm_demo.service.RewardPolicyApplicableTargetService;
 import com.example.apus_hrm_demo.service.RewardPolicyLineService;
@@ -29,6 +30,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -76,7 +78,7 @@ public class RewardPolicyServiceImpl implements RewardPolicyService {
     }
 
     private void updateApplicabletarget(RewardPolicyDTO rewardPolicyDTO, RewardPolicyEntity rewardPolicyEntity, Boolean checkApplicable, ApplicableType oldApplicableType) {
-        int length = (rewardPolicyDTO.getRewardPolicyLine().size()<= rewardPolicyDTO.getTarget().size()) ? rewardPolicyDTO.getRewardPolicyLine().size()-1 : rewardPolicyDTO.getTarget().size()-1;
+        int length = (rewardPolicyDTO.getRewardPolicyLine().size()>= rewardPolicyDTO.getTarget().size()) ? rewardPolicyDTO.getRewardPolicyLine().size()-1 : rewardPolicyDTO.getTarget().size()-1;
         if(Boolean.FALSE.equals(checkApplicable) && oldApplicableType!= ApplicableType.ALL) {
             rewardPolicyApplicableTargetService.delete(rewardPolicyEntity.getId());
         }
@@ -92,6 +94,8 @@ public class RewardPolicyServiceImpl implements RewardPolicyService {
                 }
             }
         }
+        List<Long> lineIds = rewardPolicyDTO.getRewardPolicyLine().stream().map(RewardPolicyLineDTO::getId).toList();
+        rewardPolicyLineService.deleteById(lineIds,rewardPolicyEntity.getId());
     }
 
     @Override

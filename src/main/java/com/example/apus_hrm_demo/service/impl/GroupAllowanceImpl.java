@@ -16,6 +16,7 @@ import com.example.apus_hrm_demo.util.enum_util.SearchOperation;
 import com.example.apus_hrm_demo.util.response.CommonResponseGenerator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -35,7 +36,7 @@ public class GroupAllowanceImpl implements GroupAllowanceService {
     @Override
     public BaseResponse<ResponseAfterCUDTO> create(GroupAllowanceDTO groupAllowanceDTO) {
         GroupAllowanceEntity groupAllowanceEntity = groupAllowanceMapper.toEntity(groupAllowanceDTO);
-        return commonResponseGenerator.returnCUResponse(groupAllowanceEntity, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS,groupAllowanceMapper);
+        return commonResponseGenerator.returnCUResponse(groupAllowanceEntity, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS, groupAllowanceMapper);
 
     }
 
@@ -52,7 +53,7 @@ public class GroupAllowanceImpl implements GroupAllowanceService {
         GroupAllowanceEntity groupAllowanceEntity = oldGroupAllowanceEntity.get();
         groupAllowanceMapper.toUpdateEntity(groupAllowanceDTO, groupAllowanceEntity);
 
-        return commonResponseGenerator.returnCUResponse(groupAllowanceEntity, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS,groupAllowanceMapper);
+        return commonResponseGenerator.returnCUResponse(groupAllowanceEntity, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS, groupAllowanceMapper);
     }
 
     @Override
@@ -61,7 +62,12 @@ public class GroupAllowanceImpl implements GroupAllowanceService {
         if (groupAllowanceEntity.isEmpty()) {
             throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
         }
-        groupAllowanceRepository.delete(groupAllowanceEntity.get());
+        try {
+            groupAllowanceRepository.delete(groupAllowanceEntity.get());
+            groupAllowanceRepository.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.ERROR_DELETE);
+        }
     }
 
     @Override
@@ -74,7 +80,7 @@ public class GroupAllowanceImpl implements GroupAllowanceService {
     }
 
     @Override
-    public BaseResponse<ResponsePage<GroupAllowanceDTO>> getAll(String name, Boolean isActive,Pageable pageable) {
+    public BaseResponse<ResponsePage<GroupAllowanceDTO>> getAll(String name, Boolean isActive, Pageable pageable) {
         GenericSpecificationBuilder<GroupAllowanceEntity> builder = new GenericSpecificationBuilder<>();
 
         if (name != null && !name.isEmpty()) {

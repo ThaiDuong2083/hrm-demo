@@ -22,8 +22,8 @@ public interface PayrollMapper extends BaseMapper<PayrollEntity, PayrollDetailDT
     @Mapping(source = "position.id", target = "positionId")
     PayrollEntity toEntity(PayrollDTO dto);
 
-    @Mapping(target = "groupRewards", ignore = true)
-    @Mapping(target = "groupAllowances", ignore = true)
+    @Mapping(source = "id",target = "groupRewards", qualifiedByName = "toGroupRewards")
+    @Mapping(source = "id", target = "groupAllowances", qualifiedByName = "toGroupAllowances")
     @Mapping(source = "departmentId", target = "department", qualifiedByName = "getDepartment")
     @Mapping(source = "positionId", target = "position", qualifiedByName = "getPosition")
     @Mapping(source = "employeeId", target = "employee", qualifiedByName = "getEmployee")

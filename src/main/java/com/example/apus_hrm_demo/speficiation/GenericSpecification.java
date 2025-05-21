@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.Root;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,14 @@ public class GenericSpecification<T> implements Specification<T> {
             case NEGATION:
                 return cb.notEqual(root.get(criteria.getKey()), criteria.getValue());
             case GREATER_THAN:
+                if ( criteria.getValue() instanceof LocalDate date) {
+                    return cb.greaterThan(root.get(criteria.getKey()), date);
+                }
                 return cb.greaterThan(root.get(criteria.getKey()), criteria.getValue().toString());
             case LESS_THAN:
+                if ( criteria.getValue() instanceof LocalDate date) {
+                    return cb.lessThan(root.get(criteria.getKey()), date);
+                }
                 return cb.lessThan(root.get(criteria.getKey()), criteria.getValue().toString());
             case LIKE:
                 return cb.like(cb.lower(root.get(criteria.getKey())), "%" + criteria.getValue().toString().toLowerCase() + "%");

@@ -17,6 +17,7 @@ import com.example.apus_hrm_demo.util.enum_util.SearchOperation;
 import com.example.apus_hrm_demo.util.response.CommonResponseGenerator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -76,7 +77,12 @@ public class AllowanceServiceImpl implements AllowanceSercive {
         if (check.isEmpty()){
             throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND );
         }
-        allowanceRepository.delete(check.get());
+        try {
+            allowanceRepository.delete(check.get());
+            allowanceRepository.flush();
+        }catch (DataIntegrityViolationException e){
+            throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.ERROR_DELETE );
+        }
     }
 
     @Override

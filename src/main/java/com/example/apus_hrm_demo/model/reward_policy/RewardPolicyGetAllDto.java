@@ -5,7 +5,7 @@ import com.example.apus_hrm_demo.util.enum_util.State;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -14,8 +14,8 @@ public class RewardPolicyGetAllDto {
     private String name;
     private String code;
     private PolicyType type;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String description;
     private State state;
 }

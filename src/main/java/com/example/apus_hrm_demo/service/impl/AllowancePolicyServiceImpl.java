@@ -8,6 +8,7 @@ import com.example.apus_hrm_demo.mapper.allowance_policy.AllowancePolicyMapper;
 import com.example.apus_hrm_demo.model.allowance_policy.AllowancePolicyDTO;
 import com.example.apus_hrm_demo.model.allowance_policy.AllowancePolicyDetailDTO;
 import com.example.apus_hrm_demo.model.allowance_policy.AllowancePolicyGetAllDto;
+import com.example.apus_hrm_demo.model.allowance_policy_line.AllowancePolicyLineDTO;
 import com.example.apus_hrm_demo.model.base.BaseResponse;
 import com.example.apus_hrm_demo.model.base.ResponseAfterCUDTO;
 import com.example.apus_hrm_demo.model.base.ResponsePage;
@@ -29,6 +30,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -77,7 +79,7 @@ public class AllowancePolicyServiceImpl implements AllowancePolicyService {
     }
 
     private void updateApplicable(AllowancePolicyDTO allowancePolicyDTO, AllowancePolicyEntity allowancePolicyEntity, Boolean checkApplicable, ApplicableType oldApplicableType) {
-        int length = (allowancePolicyDTO.getAllowancePolicyLine().size()<= allowancePolicyDTO.getTarget().size()) ? allowancePolicyDTO.getAllowancePolicyLine().size()-1 : allowancePolicyDTO.getTarget().size()-1;
+        int length = (allowancePolicyDTO.getAllowancePolicyLine().size()>= allowancePolicyDTO.getTarget().size()) ? allowancePolicyDTO.getAllowancePolicyLine().size()-1 : allowancePolicyDTO.getTarget().size()-1;
         if(Boolean.FALSE.equals(checkApplicable) && oldApplicableType!= ApplicableType.ALL) {
             allowancePolicyApplicableTargetService.delete(allowancePolicyEntity.getId());
         }
@@ -93,6 +95,8 @@ public class AllowancePolicyServiceImpl implements AllowancePolicyService {
                 }
             }
         }
+        List<Long> lineIds = allowancePolicyDTO.getAllowancePolicyLine().stream().map(AllowancePolicyLineDTO::getId).toList();
+        allowancePolicyLineService.deleteById(lineIds,allowancePolicyEntity.getId());
     }
 
     @Override

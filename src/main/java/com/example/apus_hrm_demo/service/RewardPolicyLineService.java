@@ -11,4 +11,5 @@ public interface RewardPolicyLineService {
     List<RewardPolicyLineGetAllDTO> findByRewardPolicyId(Long rewardPolicyId);
     void deleteAll(Long rewardPolicyId);
 
+    void deleteById(List<Long> lineIds, Long rewardPolicyId);
 }

@@ -57,5 +57,18 @@ public class AllowancePolicyLineServiceImpl implements AllowancePolicyLineServic
             list.stream().iterator().forEachRemaining(allowancePolicyLineRepository::delete);
         }
     }
+
+    @Override
+    public void deleteById(List<Long> lineIds, Long allowancePolicyId) {
+        List<Long> lineEntityIds = allowancePolicyLineRepository.findAllIdByAllowancePolicy(allowancePolicyId);
+        if (lineEntityIds.isEmpty()){
+            throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
+        }
+        for (Long lineEntityId : lineEntityIds){
+            if (!lineIds.contains(lineEntityId)){
+                allowancePolicyLineRepository.deleteById(lineEntityId);
+            }
+        }
+    }
 }
 

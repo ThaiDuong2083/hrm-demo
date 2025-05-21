@@ -16,11 +16,13 @@ import com.example.apus_hrm_demo.util.enum_util.SearchOperation;
 import com.example.apus_hrm_demo.util.response.CommonResponseGenerator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -34,7 +36,7 @@ public class GroupRewardImpl implements GroupRewardService {
     @Override
     public BaseResponse<ResponseAfterCUDTO> create(GroupRewardDTO groupRewardDTO) {
         GroupRewardEntity groupRewardEntity = groupRewardMapper.toEntity(groupRewardDTO);
-        return commonResponseGenerator.returnCUResponse(groupRewardEntity, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS,groupRewardMapper);
+        return commonResponseGenerator.returnCUResponse(groupRewardEntity, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS, groupRewardMapper);
     }
 
     @Override
@@ -50,7 +52,7 @@ public class GroupRewardImpl implements GroupRewardService {
 
         GroupRewardEntity groupRewardEntity = oldGroupRewardEntity.get();
         groupRewardMapper.toUpdateEntity(groupRewardDTO, groupRewardEntity);
-        return commonResponseGenerator.returnCUResponse(groupRewardEntity, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS,groupRewardMapper);
+        return commonResponseGenerator.returnCUResponse(groupRewardEntity, TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS, groupRewardMapper);
     }
 
     @Override
@@ -59,7 +61,12 @@ public class GroupRewardImpl implements GroupRewardService {
         if (groupRewardEntity.isEmpty()) {
             throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
         }
-        groupRewardRepository.delete(groupRewardEntity.get());
+        try {
+            groupRewardRepository.delete(groupRewardEntity.get());
+            groupRewardRepository.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.ERROR_DELETE);
+        }
     }
 
     @Override

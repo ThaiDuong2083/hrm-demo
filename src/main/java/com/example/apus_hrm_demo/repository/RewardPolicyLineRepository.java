@@ -12,4 +12,6 @@ public interface RewardPolicyLineRepository extends JpaRepository<RewardPolicyLi
     List<RewardPolicyLineEntity> findByRewardPolicyId(Long rewardPolicyId);
     @Query("select a from RewardPolicyLineEntity a where a.rewardId =:rewardId")
     List<RewardPolicyLineEntity> findByRewardId(Long rewardId);
+    @Query("select r.id from RewardPolicyLineEntity r where r.rewardPolicyId =:rewardPolicyId")
+    List<Long> findAllIdByRewardPolicy(Long rewardPolicyId);
 }

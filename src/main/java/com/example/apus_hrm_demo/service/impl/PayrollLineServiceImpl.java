@@ -37,11 +37,11 @@ public class PayrollLineServiceImpl implements PayrollLineService {
         if (line.getId() == null) {
             payrollLineEntity = payrollLineMapper.toEntity(line);
             payrollLineEntity.setPayrollId(payrollId);
-        }else {
+        } else {
             Optional<PayrollLineEntity> optionalPayrollLineEntity = payrollLineRepository.findById(line.getId());
-            if (optionalPayrollLineEntity.isEmpty()){
+            if (optionalPayrollLineEntity.isEmpty()) {
                 throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
-            }else {
+            } else {
                 payrollLineEntity = optionalPayrollLineEntity.get();
                 payrollLineMapper.toUpdateEntity(line, payrollLineEntity);
             }
@@ -52,7 +52,7 @@ public class PayrollLineServiceImpl implements PayrollLineService {
     @Override
     public void deleteAll(Long payrollId) {
         List<PayrollLineEntity> list = payrollLineRepository.findByPayrollId(payrollId);
-        if (!list.isEmpty()){
+        if (!list.isEmpty()) {
             list.stream().iterator().forEachRemaining(payrollLineRepository::delete);
         }
     }
@@ -60,9 +60,9 @@ public class PayrollLineServiceImpl implements PayrollLineService {
     @Override
     public List<PayrollLineGetAllDTO> findAll(Long payrollId) {
         List<PayrollLineEntity> list = payrollLineRepository.findByPayrollId(payrollId);
-        if (list.isEmpty()){
+        if (list.isEmpty()) {
             return null;
         }
-        return list.stream().map(entity->  payrollLineMapper.toGetAllDto(entity, new PayrollLineContext(entity.getGroupTargetId(),entity.getType()))).toList();
+        return list.stream().map(entity -> payrollLineMapper.toGetAllDto(entity, new PayrollLineContext(entity.getGroupTargetId(), entity.getType()))).toList();
     }
 }

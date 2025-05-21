@@ -57,5 +57,18 @@ public class RewardPolicyLineServiceImpl implements RewardPolicyLineService {
             list.stream().iterator().forEachRemaining(rewardPolicyLineRepository::delete);
         }
     }
+
+    @Override
+    public void deleteById(List<Long> lineIds, Long rewardPolicyId) {
+        List<Long> lineEntityIds = rewardPolicyLineRepository.findAllIdByRewardPolicy(rewardPolicyId);
+        if (lineEntityIds.isEmpty()){
+            throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
+        }
+        for (Long lineEntityId : lineEntityIds){
+            if (!lineIds.contains(lineEntityId)){
+                rewardPolicyLineRepository.deleteById(lineEntityId);
+            }
+        }
+    }
 }
 

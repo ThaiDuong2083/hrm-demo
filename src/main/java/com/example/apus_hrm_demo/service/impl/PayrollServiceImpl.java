@@ -87,6 +87,4 @@ public class PayrollServiceImpl implements PayrollService {
         }
         return commonResponseGenerator.returnReadResponse(payrollEntityOptional.get(), TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS,payrollMapper);
     }
-
-
 }

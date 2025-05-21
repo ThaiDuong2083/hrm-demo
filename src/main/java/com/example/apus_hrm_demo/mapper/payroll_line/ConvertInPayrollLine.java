@@ -1,6 +1,7 @@
 package com.example.apus_hrm_demo.mapper.payroll_line;
 
 import com.example.apus_hrm_demo.entity.*;
+import com.example.apus_hrm_demo.exception.NullEntityException;
 import com.example.apus_hrm_demo.mapper.allowance.AllowanceMapper;
 import com.example.apus_hrm_demo.mapper.reward.RewardMapper;
 import com.example.apus_hrm_demo.model.allowance.AllowanceDTO;
@@ -10,6 +11,8 @@ import com.example.apus_hrm_demo.repository.AllowancePolicyLineRepository;
 import com.example.apus_hrm_demo.repository.AllowanceRepository;
 import com.example.apus_hrm_demo.repository.RewardPolicyLineRepository;
 import com.example.apus_hrm_demo.repository.RewardRepository;
+import com.example.apus_hrm_demo.util.TraceIdGenarator;
+import com.example.apus_hrm_demo.util.constant.MessageResponseConstant;
 import com.example.apus_hrm_demo.util.enum_util.Cycle;
 import com.example.apus_hrm_demo.util.enum_util.PayrollLineType;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +36,19 @@ public class ConvertInPayrollLine {
     @Named("toLineDTO")
     public LineDTO toLineDTO(Long targetId,@Context PayrollLineContext payrollLineContext) {
         if (PayrollLineType.ALLOWANCE == payrollLineContext.getPayrollLineType()) {
-            AllowanceDTO allowanceDTO = allowanceMapper.toDto(new AllowanceEntity(payrollLineContext.getGroupTargetId(),targetId));
+            Optional<AllowanceEntity> allowanceEntityOptional= allowanceRepository.findById(targetId);
+            if (allowanceEntityOptional.isEmpty()){
+                throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
+            }
+            AllowanceDTO allowanceDTO = allowanceMapper.toDto(allowanceEntityOptional.get());
             return new LineDTO(allowanceDTO.getId(),allowanceDTO.getName(),allowanceDTO.getCode(),
                     allowanceDTO.getIncludeType(),allowanceDTO.getGroupAllowance());
         } else {
-            RewardDTO rewardDTO= rewardMapper.toDto(new RewardEntity(targetId,payrollLineContext.getGroupTargetId()));
+            Optional<RewardEntity> rewardEntityOptional= rewardRepository.findById(targetId);
+            if (rewardEntityOptional.isEmpty()){
+                throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
+            }
+            RewardDTO rewardDTO = rewardMapper.toDto(rewardEntityOptional.get());
             return new LineDTO(rewardDTO.getId(),rewardDTO.getName(),rewardDTO.getCode(),
                     rewardDTO.getIncludeType(),rewardDTO.getGroupReward());
         }

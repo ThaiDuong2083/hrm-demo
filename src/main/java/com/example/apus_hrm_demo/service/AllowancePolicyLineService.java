@@ -11,4 +11,5 @@ public interface AllowancePolicyLineService {
     List<AllowancePolicyLineGetAllDTO> findByAllowancePolicyId(Long allowancePolicyId);
     void deleteAll(Long allowancePolicyId);
 
+    void deleteById(List<Long> lineIds, Long allowancePolicyId);
 }
