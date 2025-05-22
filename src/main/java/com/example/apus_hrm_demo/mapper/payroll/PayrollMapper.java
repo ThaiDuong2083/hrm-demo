@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = ConvertInPayroll.class)
+@Mapper(componentModel = "spring")
 public interface PayrollMapper {
 
     @Mapping(target = "updatedBy", ignore = true)
