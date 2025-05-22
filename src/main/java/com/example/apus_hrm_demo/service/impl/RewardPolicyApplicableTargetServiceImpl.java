@@ -1,15 +1,12 @@
 package com.example.apus_hrm_demo.service.impl;
 
 import com.example.apus_hrm_demo.entity.RewardPolicyApplicableTargetEntity;
-import com.example.apus_hrm_demo.exception.NullEntityException;
 import com.example.apus_hrm_demo.mapper.reward_policy_applicable_target.RewardPolicyApplicableTargetMapper;
 import com.example.apus_hrm_demo.model.base.BaseDTO;
 import com.example.apus_hrm_demo.model.reward_policy_applicable_target.RewardPolicyApplicableTargetDTO;
 import com.example.apus_hrm_demo.repository.RewardPolicyApplicableTargetRepository;
 import com.example.apus_hrm_demo.service.ExtenalService;
 import com.example.apus_hrm_demo.service.RewardPolicyApplicableTargetService;
-import com.example.apus_hrm_demo.util.TraceIdGenarator;
-import com.example.apus_hrm_demo.util.constant.MessageResponseConstant;
 import com.example.apus_hrm_demo.util.enum_util.ApplicableType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

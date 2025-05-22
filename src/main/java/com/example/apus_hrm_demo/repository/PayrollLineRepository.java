@@ -10,9 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PayrollLineRepository extends JpaRepository<PayrollLineEntity, Long>, JpaSpecificationExecutor<PayrollLineEntity> {
-    @Query("select p from PayrollLineEntity p where p.payrollId =:payrollId")
-    List<PayrollLineEntity> findByPayrollId(Long payrollId);
-
     @Modifying
     @Query("delete from PayrollLineEntity p where p.payrollId =:payrollId")
     void deleteByPayrollId(Long payrollId);
