@@ -1,8 +1,6 @@
 package com.example.apus_hrm_demo.mapper.reward;
 
 import com.example.apus_hrm_demo.entity.RewardEntity;
-import com.example.apus_hrm_demo.mapper.base.BaseMapper;
-import com.example.apus_hrm_demo.model.base.ResponseAfterCUDTO;
 import com.example.apus_hrm_demo.model.reward.RewardDTO;
 import com.example.apus_hrm_demo.model.reward.RewardGetAllDTO;
 import org.mapstruct.Mapper;
@@ -10,11 +8,11 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = ConvertInReward.class)
-public interface RewardMapper extends BaseMapper<RewardEntity, RewardDTO, RewardGetAllDTO, ResponseAfterCUDTO> {
+public interface RewardMapper {
     @Mapping(source = "includeType",target = "includeType", qualifiedByName = "includeTypeToDto")
-    @Mapping(source = "currencyId", target = "currency", qualifiedByName = "currencyToDTO")
-    @Mapping(source = "uomId", target = "uom", qualifiedByName = "uomToDTO")
-    @Mapping(source = "groupRewardId", target = "groupReward", qualifiedByName = "toGroupRewardDTO")
+    @Mapping(source = "currencyId", target = "currency.id")
+    @Mapping(source = "uomId", target = "uom.id")
+    @Mapping(source = "groupRewardId", target = "groupReward.id")
     RewardDTO toDto(RewardEntity rewardEntity);
 
 
@@ -28,7 +26,7 @@ public interface RewardMapper extends BaseMapper<RewardEntity, RewardDTO, Reward
     @Mapping(target = "createdBy", ignore = true)
     RewardEntity toEntity(RewardDTO rewardFormDTO);
 
-    @Mapping(source = "groupRewardId", target = "groupReward", qualifiedByName = "toGroupRewardDTO")
+    @Mapping(source = "groupRewardId", target = "groupReward.id")
     RewardGetAllDTO toGetAllDto(RewardEntity rewardEntity);
 
     @Mapping(source = "currency.id", target = "currencyId")

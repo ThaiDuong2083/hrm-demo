@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AllowancePolicyApplicableTargetDTO {
+    private Long id;
     private Long targetId;
     private String name;
 }

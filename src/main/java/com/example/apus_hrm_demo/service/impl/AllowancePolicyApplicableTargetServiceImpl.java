@@ -1,13 +1,13 @@
 package com.example.apus_hrm_demo.service.impl;
 
 import com.example.apus_hrm_demo.entity.AllowancePolicyApplicableTargetEntity;
-import com.example.apus_hrm_demo.entity.call_other_sv.BaseOtherSVEntity;
 import com.example.apus_hrm_demo.exception.NullEntityException;
 import com.example.apus_hrm_demo.mapper.allowance_policy_applicable_target.AllowancePolicyApplicableTargetMapper;
-import com.example.apus_hrm_demo.model.allowance_policy_applicable_target.AllowancePolicyApplicableTargetDetailDTO;
+import com.example.apus_hrm_demo.model.allowance_policy_applicable_target.AllowancePolicyApplicableTargetDTO;
+import com.example.apus_hrm_demo.model.base.BaseDTO;
 import com.example.apus_hrm_demo.repository.AllowancePolicyApplicableTargetRepository;
 import com.example.apus_hrm_demo.service.AllowancePolicyApplicableTargetService;
-import com.example.apus_hrm_demo.service.ApplicableTargetService;
+import com.example.apus_hrm_demo.service.ExtenalService;
 import com.example.apus_hrm_demo.util.TraceIdGenarator;
 import com.example.apus_hrm_demo.util.constant.MessageResponseConstant;
 import com.example.apus_hrm_demo.util.enum_util.ApplicableType;
@@ -15,9 +15,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -25,58 +24,50 @@ import java.util.Optional;
 public class AllowancePolicyApplicableTargetServiceImpl implements AllowancePolicyApplicableTargetService {
     private final AllowancePolicyApplicableTargetRepository allowancePolicyApplicableTargetRepository;
     private final AllowancePolicyApplicableTargetMapper allowancePolicyApplicableTargetMapper;
-    private final ApplicableTargetService applicableTargetService;
-
+    private final ExtenalService extenalService;
     @Override
-    public void create(AllowancePolicyApplicableTargetDetailDTO allowancePolicyApplicableTargetDetailDTO, Long allowancePolicyId) {
-        AllowancePolicyApplicableTargetEntity allowancePolicyApplicableTargetEntity = allowancePolicyApplicableTargetMapper.toEntity(allowancePolicyApplicableTargetDetailDTO);
-        allowancePolicyApplicableTargetEntity.setAllowancePolicyId(allowancePolicyId);
-        allowancePolicyApplicableTargetRepository.save(allowancePolicyApplicableTargetEntity);
+    public void createOrUpdate(List<AllowancePolicyApplicableTargetDTO> allowancePolicyApplicableTargetDTOS, Long allowancePolicyId) {
+        List<AllowancePolicyApplicableTargetEntity> list = new ArrayList<>();
+        allowancePolicyApplicableTargetDTOS.forEach(allowancePolicyApplicableTargetDTO -> {
+            AllowancePolicyApplicableTargetEntity allowancePolicyApplicableTargetEntity;
+                allowancePolicyApplicableTargetEntity = allowancePolicyApplicableTargetMapper.toEntity(allowancePolicyApplicableTargetDTO);
+                allowancePolicyApplicableTargetEntity.setAllowancePolicyId(allowancePolicyId);
+                list.add(allowancePolicyApplicableTargetEntity);
+        });
+        allowancePolicyApplicableTargetRepository.saveAll(list);
     }
 
-    @Override
-    public void update(AllowancePolicyApplicableTargetDetailDTO allowancePolicyApplicableTargetDetailDTO, Long allowancePolicyId) {
-        if (allowancePolicyApplicableTargetDetailDTO.getId() == null) {
-            create(allowancePolicyApplicableTargetDetailDTO,allowancePolicyId);
-        }else {
-            Optional<AllowancePolicyApplicableTargetEntity> allowancePolicyApplicableTargetEntityOptional = allowancePolicyApplicableTargetRepository.findById(allowancePolicyApplicableTargetDetailDTO.getId());
-            if (allowancePolicyApplicableTargetEntityOptional.isEmpty()){
-                throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
-            }
-            AllowancePolicyApplicableTargetEntity allowancePolicyApplicableTargetEntity = allowancePolicyApplicableTargetEntityOptional.get();
-            allowancePolicyApplicableTargetMapper.toUpdateEntity(allowancePolicyApplicableTargetDetailDTO, allowancePolicyApplicableTargetEntity);
-            allowancePolicyApplicableTargetRepository.save(allowancePolicyApplicableTargetEntity);
+    private Map<Long,BaseDTO> getApplicableTargets(Set<Long>ids, ApplicableType applicableType){
+        List<BaseDTO> applicableTargets;
+        Map<Long,BaseDTO> applicableTargetMap = new HashMap<>();
+        switch (applicableType){
+            case ApplicableType.EMPLOYEE -> applicableTargets= extenalService.getEmployees(ids);
+            case ApplicableType.POSITION -> applicableTargets= extenalService.getPositions(ids);
+            case ApplicableType.DEPARTMENT -> applicableTargets= extenalService.getDepartments(ids);
+            default -> { return null;}
         }
+        applicableTargets.forEach(applicableTarget -> applicableTargetMap.put(applicableTarget.getId(), applicableTarget));
+        return applicableTargetMap;
     }
 
     @Override
-    public List<AllowancePolicyApplicableTargetDetailDTO> findByAllowancePolicyId(Long allowancePolicyId, ApplicableType applicableType) {
+    public List<AllowancePolicyApplicableTargetDTO> findByAllowancePolicyId(Long allowancePolicyId, ApplicableType applicableType) {
         if (applicableType == ApplicableType.ALL){
             return null;
         }
 
         List<AllowancePolicyApplicableTargetEntity> listEntity = allowancePolicyApplicableTargetRepository.findByAllowancePolicyId(allowancePolicyId);
-        List<BaseOtherSVEntity> listTargets = applicableTargetService.getApplicableTargets(listEntity.stream().map(AllowancePolicyApplicableTargetEntity::getTargetId).toList(), applicableType);
+        Map<Long,BaseDTO> applicableTargetsMap = getApplicableTargets(listEntity.stream().map(AllowancePolicyApplicableTargetEntity::getTargetId).collect(Collectors.toSet()), applicableType);
 
-        List<AllowancePolicyApplicableTargetDetailDTO> listDtos = new ArrayList<>();
-        AllowancePolicyApplicableTargetDetailDTO dto;
-        for (int i = 0; i < (listTargets.size()); i++) {
-            dto = allowancePolicyApplicableTargetMapper.toGetAllDto(listEntity.get(i));
-            dto.setTargetId(listTargets.get(i).getId());
-            dto.setName(listTargets.get(i).getName());
-            listDtos.add(dto);
-        }
-
-        return listDtos;
+        return listEntity.stream().map(entity ->{
+            AllowancePolicyApplicableTargetDTO allowancePolicyApplicableTargetDTO = allowancePolicyApplicableTargetMapper.toDto(entity);
+            allowancePolicyApplicableTargetDTO.setName(Objects.requireNonNull(applicableTargetsMap).get(entity.getTargetId()).getName());
+            return allowancePolicyApplicableTargetDTO;}).toList();
     }
 
     @Override
-    public void delete(Long allowanceId) {
-        List<AllowancePolicyApplicableTargetEntity> list = allowancePolicyApplicableTargetRepository.findByAllowancePolicyId(allowanceId);
-        if (list.isEmpty()){
-            throw new NullEntityException(TraceIdGenarator.getTraceId(), MessageResponseConstant.NOT_FOUND);
-        }
-        list.stream().iterator().forEachRemaining(allowancePolicyApplicableTargetRepository::delete);
+    public void delete(Long allowancePolicyId) {
+        allowancePolicyApplicableTargetRepository.deleteByAllowancePolicyId(allowancePolicyId);
     }
 
 }

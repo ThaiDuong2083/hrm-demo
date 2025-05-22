@@ -1,22 +1,19 @@
 package com.example.apus_hrm_demo.mapper.allowance_policy;
 
 import com.example.apus_hrm_demo.entity.AllowancePolicyEntity;
-import com.example.apus_hrm_demo.mapper.base.BaseMapper;
 import com.example.apus_hrm_demo.model.allowance_policy.AllowancePolicyDTO;
-import com.example.apus_hrm_demo.model.allowance_policy.AllowancePolicyDetailDTO;
 import com.example.apus_hrm_demo.model.allowance_policy.AllowancePolicyGetAllDto;
-import com.example.apus_hrm_demo.model.base.ResponseAfterCUDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = ConvertInAllowancePolicy.class)
-public interface AllowancePolicyMapper extends BaseMapper<AllowancePolicyEntity, AllowancePolicyDetailDTO, AllowancePolicyGetAllDto, ResponseAfterCUDTO> {
+@Mapper(componentModel = "spring")
+public interface AllowancePolicyMapper {
     AllowancePolicyGetAllDto toGetAllDto(AllowancePolicyEntity entity);
 
+    @Mapping(target = "allowancePolicyLine", ignore = true)
     @Mapping(target = "target", ignore = true)
-    @Mapping(source = "id", target = "allowancePolicyLine",qualifiedByName = "convertToAllowancePolicyLineDTO")
-    AllowancePolicyDetailDTO toDto(AllowancePolicyEntity entity);
+    AllowancePolicyDTO toDto(AllowancePolicyEntity entity);
 
     @Mapping(target = "updatedBy", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)

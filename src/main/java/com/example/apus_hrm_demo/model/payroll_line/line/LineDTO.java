@@ -18,5 +18,7 @@ public class LineDTO {
     private String name ;
     private String code ;
     private Set<DeductionType> includeType;
+    private BaseDTO uom;
+    private BaseDTO currency;
     private BaseDTO group;
 }

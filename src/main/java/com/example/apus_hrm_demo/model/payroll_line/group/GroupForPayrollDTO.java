@@ -1,6 +1,7 @@
 package com.example.apus_hrm_demo.model.payroll_line.group;
 
-import com.example.apus_hrm_demo.model.payroll_line.PayrollLineDetailDTO;
+import com.example.apus_hrm_demo.model.base.BaseDTO;
+import com.example.apus_hrm_demo.model.payroll_line.PayrollLineDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroupAllowanceForPayrollDTO {
-    private List<String> allGroupName;
-    private List<PayrollLineDetailDTO> allowanceLines;
+public class GroupForPayrollDTO {
+    private List<BaseDTO> allGroup;
+    private List<PayrollLineDTO> lines;
 }

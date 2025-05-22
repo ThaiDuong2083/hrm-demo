@@ -20,6 +20,6 @@ public class GlobalExceptionHandlerImpl implements GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public BaseResponse<String> handleNullEnityException(NullEntityException ex) {
-        return new BaseResponse<>(ex.getCode(),generateMessage.getMessage(ex.getCode(),request.getLocale()), null );
+        return new BaseResponse<>(ex.getTraceId(),generateMessage.getMessage(ex.getCode(),request.getLocale()), null );
     }
 }

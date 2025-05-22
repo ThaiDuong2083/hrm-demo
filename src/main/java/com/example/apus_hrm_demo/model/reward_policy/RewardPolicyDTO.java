@@ -1,6 +1,6 @@
 package com.example.apus_hrm_demo.model.reward_policy;
 
-import com.example.apus_hrm_demo.model.reward_policy_applicable_target.RewardPolicyApplicableTargetDetailDTO;
+import com.example.apus_hrm_demo.model.reward_policy_applicable_target.RewardPolicyApplicableTargetDTO;
 import com.example.apus_hrm_demo.model.reward_policy_line.RewardPolicyLineDTO;
 import com.example.apus_hrm_demo.util.enum_util.ApplicableType;
 import com.example.apus_hrm_demo.util.enum_util.PolicyType;
@@ -21,7 +21,7 @@ public class RewardPolicyDTO {
     private LocalDate startDate;
     private LocalDate endDate;
     private ApplicableType applicableType;
-    private List<RewardPolicyApplicableTargetDetailDTO> target;
+    private List<RewardPolicyApplicableTargetDTO> target;
     private List<RewardPolicyLineDTO> rewardPolicyLine;
     private String description;
     private State state;
