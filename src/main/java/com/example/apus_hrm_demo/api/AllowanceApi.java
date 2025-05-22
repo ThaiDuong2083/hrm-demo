@@ -23,7 +23,7 @@ public class AllowanceApi {
     }
 
     @GetMapping()
-    public ResponseEntity<BaseResponse<AllowanceDTO>> getAllowance(@RequestParam Long id) {
+    public ResponseEntity<BaseResponse<AllowanceDTO>> getAllowance(@RequestParam Long id ) {
         return  ResponseEntity.ok(allowanceSercive.findById(id));
     }
 

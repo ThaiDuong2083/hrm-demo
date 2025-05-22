@@ -3,7 +3,8 @@ package com.example.apus_hrm_demo.api;
 import com.example.apus_hrm_demo.model.base.BaseResponse;
 import com.example.apus_hrm_demo.model.base.ResponseAfterCUDTO;
 import com.example.apus_hrm_demo.model.base.ResponsePage;
-import com.example.apus_hrm_demo.model.GroupAllowanceDTO;
+import com.example.apus_hrm_demo.model.group_allowance.GroupAllowanceDTO;
+import com.example.apus_hrm_demo.model.group_allowance.GroupAllowanceGetAllDTO;
 import com.example.apus_hrm_demo.service.GroupAllowanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +18,9 @@ public class GroupAllowanceApi {
     private final GroupAllowanceService groupAllowanceService;
 
     @GetMapping("/list")
-    public ResponseEntity<BaseResponse<ResponsePage<GroupAllowanceDTO>>> getAll(@RequestParam(required = false) String name,
-                                                                                @RequestParam(required = false) Boolean isActive,
-                                                                                Pageable pageable) {
+    public ResponseEntity<BaseResponse<ResponsePage<GroupAllowanceGetAllDTO>>> getAll(@RequestParam(required = false) String name,
+                                                                                      @RequestParam(required = false) Boolean isActive,
+                                                                                      Pageable pageable) {
         return ResponseEntity.ok(groupAllowanceService.getAll(name, isActive,pageable));
     }
     @PostMapping("")

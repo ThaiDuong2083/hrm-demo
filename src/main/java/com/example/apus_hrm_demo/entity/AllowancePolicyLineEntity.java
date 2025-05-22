@@ -1,26 +1,26 @@
 package com.example.apus_hrm_demo.entity;
 
-import com.example.apus_hrm_demo.util.Cycle;
+import com.example.apus_hrm_demo.util.enum_util.Cycle;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name ="allowance_policy")
+@Table(name ="allowance_policy_line")
 @Getter
 @Setter
+@NoArgsConstructor
 public class AllowancePolicyLineEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "allownce_policy_id")
-    private AllowancePolicyEntity allowancePolicyEntity;
+    @Column(name = "allowance_policy_id", nullable = false)
+    private Long allowancePolicyId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "allowance_id")
-    private AllowanceEntity allowanceEntity;
+    @Column(nullable = false, name = "allowance_id")
+    private Long allowanceId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -1,26 +1,26 @@
 package com.example.apus_hrm_demo.entity;
 
-import com.example.apus_hrm_demo.util.Cycle;
+import com.example.apus_hrm_demo.util.enum_util.Cycle;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name ="allowance_policy")
+@Table(name ="reward_policy_line")
 @Getter
 @Setter
+@NoArgsConstructor
 public class RewardPolicyLineEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reward_policy_id")
-    private RewardPolicyLineEntity rewardPolicyLineEntity;
+    @Column(nullable = false, name = "reward_policy_id")
+    private Long rewardPolicyId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "reward_id")
-    private RewardEntity rewardEntity;
+    @Column(nullable = false, name = "reward_id")
+    private Long rewardId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -28,4 +28,8 @@ public class RewardPolicyLineEntity extends BaseEntity {
 
     @Column(nullable = false)
     private Double amount;
+
+    public RewardPolicyLineEntity(Long id) {
+        this.id = id;
+    }
 }

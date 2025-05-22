@@ -1,17 +1,16 @@
 package com.example.apus_hrm_demo.entity;
 
-import com.example.apus_hrm_demo.util.AllowanceRewardType;
-import com.example.apus_hrm_demo.util.DeductionType;
+import com.example.apus_hrm_demo.util.enum_util.AllowanceRewardType;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Set;
 
 @Entity
 @Table(name ="reward")
 @Getter
 @Setter
+@NoArgsConstructor
 public class RewardEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +22,8 @@ public class RewardEntity extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String code;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "include_type")
-    private DeductionType includeType;
+    private String includeType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -36,12 +34,13 @@ public class RewardEntity extends BaseEntity {
     @Column(name = "currency_id")
     private Long currencyId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_reward_id")
-    private GroupRewardEntity groupReward;
+    @Column(name = "group_reward_id")
+    private Long groupRewardId;
 
     private String description;
 
-    @OneToMany(mappedBy = "rewardEntity",fetch = FetchType.LAZY)
-    private Set<RewardPolicyLineEntity> rewardPolicyLineEntities;
+    public RewardEntity(Long id, Long groupRewardId) {
+        this.id = id;
+        this.groupRewardId = groupRewardId;
+    }
 }

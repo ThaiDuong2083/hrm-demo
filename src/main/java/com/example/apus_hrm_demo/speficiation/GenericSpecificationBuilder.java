@@ -1,5 +1,6 @@
 package com.example.apus_hrm_demo.speficiation;
 
+import com.example.apus_hrm_demo.util.enum_util.SearchOperation;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -9,15 +10,14 @@ public class GenericSpecificationBuilder<T> {
 
     private final List<SpecSearchCriteria> criteriaList = new ArrayList<>();
 
-    public GenericSpecificationBuilder<T> with(String key, SearchOperation operation, Object value, boolean orPredicate) {
+    public void  with(String key, SearchOperation operation, Object value, boolean orPredicate) {
         criteriaList.add(new SpecSearchCriteria(key, operation, value, orPredicate));
-        return this;
     }
 
     public Specification<T> build() {
         if (criteriaList.isEmpty()) return null;
 
-        Specification<T> result = new GenericSpecification<>(criteriaList.get(0));
+        Specification<T> result = new GenericSpecification<>(criteriaList.getFirst());
 
         for (int i = 1; i < criteriaList.size(); i++) {
             SpecSearchCriteria criteria = criteriaList.get(i);

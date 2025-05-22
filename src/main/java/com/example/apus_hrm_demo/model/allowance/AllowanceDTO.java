@@ -1,8 +1,8 @@
 package com.example.apus_hrm_demo.model.allowance;
 
 import com.example.apus_hrm_demo.model.base.BaseDTO;
-import com.example.apus_hrm_demo.util.AllowanceRewardType;
-import com.example.apus_hrm_demo.util.DeductionType;
+import com.example.apus_hrm_demo.util.enum_util.AllowanceRewardType;
+import com.example.apus_hrm_demo.util.enum_util.DeductionType;
 import lombok.Getter;
 import lombok.Setter;
 

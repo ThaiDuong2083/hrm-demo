@@ -13,8 +13,6 @@ public class JpaAuditingConfig {
 
     @Bean
     public AuditorAware<Long> auditorAware() {
-        return () -> {
-           return Optional.of(1L);
-        };
+        return () -> Optional.of(1L);
     }
 }

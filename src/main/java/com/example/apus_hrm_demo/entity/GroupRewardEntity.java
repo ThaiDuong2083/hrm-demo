@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Entity
 @Table(name = "group_reward")
 @Getter
 @Setter
-public class GroupRewardEntity extends BaseEntity {
+public class GroupRewardEntity extends BaseEntity  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +24,4 @@ public class GroupRewardEntity extends BaseEntity {
 
     private String description;
 
-    @OneToMany(mappedBy = "groupReward",fetch = FetchType.LAZY)
-    private Set<RewardEntity> rewardEntities;
 }
