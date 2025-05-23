@@ -35,4 +35,8 @@ public class PayrollApi {
     public ResponseEntity<BaseResponse<ResponsePage<PayrollGetAllDTO>>> findAll(Pageable pageable, @ParameterObject PayrollFilter payrollFilter){
         return ResponseEntity.ok(payrollService.getAll(payrollFilter ,pageable));
     }
+    @DeleteMapping
+    public void deleteById(@RequestParam("id") Long id){
+        payrollService.delete(id);
+    }
 }

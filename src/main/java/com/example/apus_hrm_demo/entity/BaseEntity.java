@@ -19,16 +19,12 @@ import java.time.LocalDateTime;
 @Setter
 public class BaseEntity implements InterfaceEntity{
     @CreatedDate
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
     @LastModifiedDate
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     @CreatedBy
-    @Column(name = "created_by")
     private Long createdBy;
     @LastModifiedBy
-    @Column(name = "updated_by")
     private Long updatedBy;
 
     @Override

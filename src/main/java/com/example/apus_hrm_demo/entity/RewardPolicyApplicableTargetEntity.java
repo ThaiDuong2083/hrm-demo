@@ -13,9 +13,7 @@ public class RewardPolicyApplicableTargetEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "reward_policy_id",nullable = false)
     private Long rewardPolicyId;
 
-    @Column(name = "target_id",nullable = false)
     private Long targetId;
 }

@@ -16,16 +16,12 @@ public class AllowancePolicyLineEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "allowance_policy_id", nullable = false)
     private Long allowancePolicyId;
 
-    @Column(nullable = false, name = "allowance_id")
     private Long allowanceId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Cycle cycle;
 
-    @Column(nullable = false)
     private Double amount;
 }

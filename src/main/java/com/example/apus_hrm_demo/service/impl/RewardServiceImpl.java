@@ -107,7 +107,7 @@ public class RewardServiceImpl implements RewardService {
         RewardDTO rewardDTO = rewardMapper.toDto(rewardEntity);
         setUomCurrency(rewardDTO);
         rewardDTO.setGroupReward(groupReward(rewardDTO.getGroupReward().getId()));
-        return commonResponseGenerator.returnReadResponse(TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS, rewardMapper.toDto(rewardEntity));
+        return commonResponseGenerator.returnReadResponse(TraceIdGenarator.getTraceId(), MessageResponseConstant.SUCCESS, rewardDTO);
     }
 
     private void setUomCurrency(RewardDTO rewardDTO) {

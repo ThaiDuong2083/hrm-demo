@@ -13,13 +13,10 @@ public class GroupRewardEntity extends BaseEntity  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
     private String code;
 
-    @Column(name = "parent_id")
     private Long parentId;
 
     private String description;
